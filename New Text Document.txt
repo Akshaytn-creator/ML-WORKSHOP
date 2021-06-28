@@ -1,0 +1,40 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+data=pd.read_csv("C:/Users/Meenakshi/Downloads/Salary_Data.csv")
+data.info()
+data.columns
+data.describe()
+data['Salary'].unique()
+data.isna().sum()
+plt.boxplot(data['Salary'])
+data.corr()
+sns.heatmap(data.corr())
+plt.bar(data['YearsExperience'],data['Salary'])
+
+x=data['YearsExperience']
+y=data['Salary']
+
+x=data.iloc[:,0:1]
+
+y=data.iloc[:,1:2]
+
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.20,random_state=0)
+
+from sklearn.linear_model import LinearRegression
+regressor=LinearRegression()
+regressor.fit(x_train,y_train)
+
+y_pred=regressor.predict(x_test)
+
+from sklearn.metrics import r2_score
+print(r2_score(y_pred,y_test))
+plt.scatter(x_train,y_train,color='red')
+plt.plot(x_train,regressor.predict(x_train),color='blue')
+plt.title("salary vs exp")
+plt.xlabel("YearsExperience")
+plt.ylabel("Salary")
+plt.draw()
